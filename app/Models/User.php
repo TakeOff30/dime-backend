@@ -44,4 +44,64 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    /**
+     * Get the user's posts.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function posts(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Post::class);
+    }
+
+    /**
+     * Get the user's followers.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function followers(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Follower::class);
+    }
+
+    /**
+     * Get the user's following.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function following(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Follower::class, 'follower_id');
+    }
+
+    /**
+     * Get the user's conversations.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function conversations()
+    {
+        return $this->belongsToMany(Conversation::class, 'conversation_participants', 'user_id', 'conversation_id');
+    }
+
+    /**
+     * Get the user's messages.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function messages()
+    {
+        return $this->hasMany(Message::class, 'sender_id');
+    }
+
+    /**
+     * Get the user's videocalls.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */ 
+    public function videocalls()
+    {
+        return $this->hasMany(Videocall::class, 'caller_id');
+    }
 }
